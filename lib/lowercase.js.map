@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "lowercase.js",
+  "sourceRoot": "../src/",
+  "sources": [
+    "lowercase.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;AAAA,MAAA,CAAA;;AAAA,EAAA,CAAA,GAAI,OAAA,CAAQ,QAAR,CAAJ,CAAA;;AAAA,EAEA,MAAM,CAAC,OAAP,GAAiB,SAAC,KAAD,GAAA;AACf,IAAA,IAAG,CAAC,CAAC,QAAF,CAAW,KAAX,CAAH;AACE,aAAO,KAAK,CAAC,WAAN,CAAA,CAAP,CADF;KAAA;AAEA,WAAO,KAAP,CAHe;EAAA,CAFjB,CAAA;AAAA"
+}

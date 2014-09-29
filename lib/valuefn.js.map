@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "valuefn.js",
+  "sourceRoot": "../src/",
+  "sources": [
+    "valuefn.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;AAAA,EAAA,MAAM,CAAC,OAAP,GAAiB,SAAC,KAAD,GAAA;AAAW,WAAO,KAAP,CAAX;EAAA,CAAjB,CAAA;AAAA"
+}
