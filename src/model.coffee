@@ -10,7 +10,7 @@ class ApplicationModel
 
   createSetter = (prop_name, fn, attributes) ->
     return (value) ->
-      return attributes[prop_name] = fn(value)
+      return attributes[prop_name] = fn.call(this, value)
 
   constructor: (params, defaults) ->
     @__attributes = {}
@@ -22,8 +22,8 @@ class ApplicationModel
     _.each(parsers, (functionName, prop_name) ->
       Object.defineProperty(this, prop_name, {
         enumerable: true
-        get: createGetter(prop_name, @__attributes)
-        set: createSetter(prop_name, this[functionName], @__attributes)
+        get: createGetter.call(this, prop_name, @__attributes)
+        set: createSetter.call(this, prop_name, this[functionName], @__attributes)
       })
     , this)
     _.each(getters_setters, (prop_name) ->
