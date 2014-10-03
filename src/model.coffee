@@ -9,8 +9,9 @@ class ApplicationModel
       return attributes[prop_name]
 
   createSetter = (prop_name, fn, attributes) ->
+    self = this
     return (value) ->
-      return attributes[prop_name] = fn.call(this, value)
+      return attributes[prop_name] = fn.call(self, value)
 
   constructor: (params, defaults) ->
     @__attributes = {}
