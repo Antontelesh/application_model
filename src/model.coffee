@@ -33,8 +33,7 @@ class ApplicationModel
         set: this[setters[prop_name]]
       })
     , this)
-    _.assign(defaults, params)
-    _.assign(this, defaults)
+    _.assign(this, defaults, params)
 
   toPlainObject: ->
     _resolve = (value) ->
