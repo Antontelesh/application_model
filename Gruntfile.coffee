@@ -38,8 +38,6 @@ module.exports = (grunt) ->
         options:
           external: ['lodash', 'angular']
           transform: ['browserify-shim']
-          browserifyOptions:
-            standalone: 'ApplicationModel'
 
     uglify:
       options:
