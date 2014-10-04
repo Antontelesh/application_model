@@ -1,8 +1,9 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.ApplicationModel=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (global){
 (function() {
   var _;
 
-  _ = require('lodash');
+  _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
 
   module.exports = function(value) {
     if (_.isString(value)) {
@@ -13,11 +14,29 @@
 
 }).call(this);
 
-},{"lodash":"lodash"}],2:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(require,module,exports){
+(function (global){
+(function() {
+  var angular, app;
+
+  angular = (typeof window !== "undefined" ? window.angular : typeof global !== "undefined" ? global.angular : null);
+
+  app = angular.module('ApplicationModel', []);
+
+  app.factory('ApplicationModel', function() {
+    return require('./model');
+  });
+
+}).call(this);
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./model":3}],3:[function(require,module,exports){
+(function (global){
 (function() {
   var ApplicationModel, snake, valueFn, _;
 
-  _ = require('lodash');
+  _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
 
   snake = require('./snake');
 
@@ -152,11 +171,13 @@
 
 }).call(this);
 
-},{"./snake":3,"./valuefn":4,"lodash":"lodash"}],3:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./snake":4,"./valuefn":5}],4:[function(require,module,exports){
+(function (global){
 (function() {
   var lowercase, _;
 
-  _ = require('lodash');
+  _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
 
   lowercase = require('./lowercase');
 
@@ -168,7 +189,8 @@
 
 }).call(this);
 
-},{"./lowercase":1,"lodash":"lodash"}],4:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./lowercase":1}],5:[function(require,module,exports){
 (function() {
   module.exports = function(value) {
     return value;
@@ -176,4 +198,5 @@
 
 }).call(this);
 
-},{}]},{},[2]);
+},{}]},{},[2])(2)
+});

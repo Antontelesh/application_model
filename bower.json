@@ -6,7 +6,10 @@
     "Anton Telesh <a.telesh@smcs.com.ua>"
   ],
   "description": "A Model class on top of CoffeeScript and Object.defineProperty()",
-  "main": "lib/model.standalone.min.js",
+  "main": "dist/model.standalone.min.js",
+  "dependencies": {
+    "lodash": "*"
+  },
   "keywords": [
     "model",
     "CoffeeScript",
@@ -19,6 +22,7 @@
   "ignore": [
     "legacy",
     "src",
+    "lib",
     "node_modules",
     "bower_components",
     "test",

@@ -9,6 +9,7 @@ module.exports = (grunt) ->
         force: true
       lib: [
         "lib/"
+        "dist/"
       ]
 
     coffee:
@@ -21,19 +22,22 @@ module.exports = (grunt) ->
           "#{dest}/#{src.replace(/\.coffee$/, '.js')}"
 
     browserify:
-      dist:
-        src: ['lib/model.js']
-        dest: 'lib/model.browserify.js'
-        options:
-          external: ['lodash']
-
       standalone:
         src: ['lib/model.js']
-        dest: 'lib/model.standalone.js'
+        dest: 'dist/model.standalone.js'
         options:
           external: ['lodash']
           transform: ['browserify-shim']
           require: ['lodash']
+          browserifyOptions:
+            standalone: 'ApplicationModel'
+
+      angular:
+        src: ['lib/model.angular.js']
+        dest: 'dist/model.angular.js'
+        options:
+          external: ['lodash', 'angular']
+          transform: ['browserify-shim']
           browserifyOptions:
             standalone: 'ApplicationModel'
 
@@ -45,8 +49,8 @@ module.exports = (grunt) ->
           except: 'lodash'
       all:
         files:
-          "lib/model.min.js": ["lib/model.js"]
-          "lib/model.standalone.min.js": ["lib/model.standalone.js"]
+          "dist/model.standalone.min.js": ["dist/model.standalone.js"]
+          "dist/model.angular.min.js": ["dist/model.angular.js"]
 
 
   grunt.registerTask "default", [ "build" ]

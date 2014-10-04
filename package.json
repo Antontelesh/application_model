@@ -16,6 +16,7 @@
     "load-grunt-tasks": "^0.6.0"
   },
   "browserify-shim": {
-    "lodash": {"exports": "global:_"}
+    "lodash": {"exports": "global:_"},
+    "angular": {"exports": "global:angular"}
   }
 }
