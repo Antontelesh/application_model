@@ -163,8 +163,23 @@ will be invoked during cycle. Their results will be assigned to resulting proper
 So if you have a property that is an instance of ApplicationModel,
 you don't need to set formatter for that property. But no one restricts you to.
 
-## Disclaimer
-All the code was written for my personal needs.
-For the moment it is not wrapped properly.
-In the future I plan to make it CommonJS/Browserify module.
-Now please go to <code>legacy</code> folder to see sources and examples.
+## Installation
+
+For the moment installation is available only by using <code>bower</code>.
+To install you should write in your command line:
+<pre>
+<code>$ bower install https://github.com/Antontelesh/application_model.git --save</code>
+</pre>
+
+## Usage
+
+Package consists of 4 distributive files:
+* <code>model.standalone.js</code> — a script which provides <code>ApplicationModel</code> object in the global scope. It requires [lodash](http://lodash.com/) to be loaded before it instantiates.
+* <code>model.angular.js</code> — ApplicationModel superclass wrapped with AngularJS's factory of the same name. As the above requires lodash to be loaded before it instantiates.
+* ...and minified versions of the above
+
+To use standalone version you should load dependencies (lodash) and the file you need (minified or not) and then you can extend any coffee-script class from ApplicationModel superclass.
+
+To use angularjs version you need to load scripts as for standalone version but use file named with <code>angular</code> word in it.
+Then ensure you put <code>ApplicationModel</code> to your module dependencies and to your controller/service dependencies.
+
