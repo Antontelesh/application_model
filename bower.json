@@ -1,0 +1,27 @@
+{
+  "name": "application_model",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Antontelesh/application_model",
+  "authors": [
+    "Anton Telesh <a.telesh@smcs.com.ua>"
+  ],
+  "description": "A Model class on top of CoffeeScript and Object.defineProperty()",
+  "main": "lib/model.standalone.min.js",
+  "keywords": [
+    "model",
+    "CoffeeScript",
+    "Object.defineProperty",
+    "defineProperty",
+    "superclass"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "legacy",
+    "src",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

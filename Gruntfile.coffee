@@ -13,8 +13,6 @@ module.exports = (grunt) ->
 
     coffee:
       compile:
-        options:
-            sourceMap: true
         expand: true
         cwd: "src"
         src: "**/*.coffee"
@@ -22,26 +20,36 @@ module.exports = (grunt) ->
         rename: (dest, src) ->
           "#{dest}/#{src.replace(/\.coffee$/, '.js')}"
 
-    watch:
-      options:
-        spawn: false
-        livereload: true
-      coffee:
-        files: "src/**/*.coffee"
-        tasks: ["coffee:compile"]
+    browserify:
+      dist:
+        src: ['lib/model.js']
+        dest: 'lib/model.browserify.js'
+        options:
+          external: ['lodash']
+
+      standalone:
+        src: ['lib/model.js']
+        dest: 'lib/model.standalone.js'
+        options:
+          external: ['lodash']
+          transform: ['browserify-shim']
+          require: ['lodash']
+          browserifyOptions:
+            standalone: 'ApplicationModel'
 
     uglify:
       options:
         report: "min"
         compress: true
-        mangle: false
+        mangle:
+          except: 'lodash'
       all:
         files:
-          "lib/application_model.min.js": ["lib/model.js"]
+          "lib/model.min.js": ["lib/model.js"]
+          "lib/model.standalone.min.js": ["lib/model.standalone.js"]
 
 
-  grunt.registerTask "default", [ "compile", "watch" ]
-  grunt.registerTask "compile", [ "clean", "coffee" ]
-  grunt.registerTask "build", [ "compile", "uglify" ]
+  grunt.registerTask "default", [ "build" ]
+  grunt.registerTask "build", [ "clean", "coffee", "browserify", "uglify" ]
 
   require('load-grunt-tasks')(grunt);
