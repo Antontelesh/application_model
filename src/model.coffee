@@ -15,7 +15,7 @@ class ApplicationModel
 
   constructor: (params, defaults) ->
     @__attributes = {}
-    @__tmp_params = _.assign({}, params, defaults)
+    @__tmp_params = _.assign({}, defaults, params)
     getters = @__getters = @getGetters()
     setters = @__setters = @getSetters()
     parsers = @__parsers = @getParsers()

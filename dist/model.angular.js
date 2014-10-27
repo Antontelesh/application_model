@@ -62,7 +62,7 @@
     function ApplicationModel(params, defaults) {
       var formatters, getters, getters_setters, parsers, setters;
       this.__attributes = {};
-      this.__tmp_params = _.assign({}, params, defaults);
+      this.__tmp_params = _.assign({}, defaults, params);
       getters = this.__getters = this.getGetters();
       setters = this.__setters = this.getSetters();
       parsers = this.__parsers = this.getParsers();
