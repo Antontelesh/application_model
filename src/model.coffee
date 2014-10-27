@@ -15,6 +15,7 @@ class ApplicationModel
 
   constructor: (params, defaults) ->
     @__attributes = {}
+    @__tmp_params = _.assign({}, params, defaults)
     getters = @__getters = @getGetters()
     setters = @__setters = @getSetters()
     parsers = @__parsers = @getParsers()
@@ -34,7 +35,8 @@ class ApplicationModel
         set: this[setters[prop_name]]
       })
     , this)
-    _.assign(this, defaults, params)
+    _.assign(this, @__tmp_params)
+    @__tmp_params = undefined
 
   toPlainObject: ->
     _resolve = (value) ->
@@ -89,5 +91,12 @@ class ApplicationModel
 
   getFormatters: ->
     @getMutators('format')
+
+  parseAttribute: (name) ->
+    value = @__tmp_params[name]
+    parser_name = @__parsers[name]
+    if _.isFunction(this[parser_name])
+      return this[parser_name](value)
+    return value
 
 module.exports = ApplicationModel

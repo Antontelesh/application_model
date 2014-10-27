@@ -62,6 +62,7 @@
     function ApplicationModel(params, defaults) {
       var formatters, getters, getters_setters, parsers, setters;
       this.__attributes = {};
+      this.__tmp_params = _.assign({}, params, defaults);
       getters = this.__getters = this.getGetters();
       setters = this.__setters = this.getSetters();
       parsers = this.__parsers = this.getParsers();
@@ -81,7 +82,8 @@
           set: this[setters[prop_name]]
         });
       }, this);
-      _.assign(this, defaults, params);
+      _.assign(this, this.__tmp_params);
+      this.__tmp_params = void 0;
     }
 
     ApplicationModel.prototype.toPlainObject = function() {
@@ -161,6 +163,16 @@
 
     ApplicationModel.prototype.getFormatters = function() {
       return this.getMutators('format');
+    };
+
+    ApplicationModel.prototype.parseAttribute = function(name) {
+      var parser_name, value;
+      value = this.__tmp_params[name];
+      parser_name = this.__parsers[name];
+      if (_.isFunction(this[parser_name])) {
+        return this[parser_name](value);
+      }
+      return value;
     };
 
     return ApplicationModel;

@@ -47,6 +47,10 @@ instance.date # Wed Dec 31 2014 00:00:00 GMT
 </code>
 </pre>
 
+__Note__: Sometimes you may need to get some parsed properties within a parser, when that properties have not been parsed yet.
+For that cases you can use <code>parseAttribute(attribute_name)</code> method. The reason is to allow getting parsed values when parsing phase has not been completed yet.
+It may be useful for getting some default values for your properties.
+
 ## Getters
 Getters are functions that are being called when someone reads object property.
 The result of such function will be returned to the user.
