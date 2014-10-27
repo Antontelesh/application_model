@@ -166,9 +166,12 @@
   lowercase = require('./lowercase');
 
   module.exports = function(value) {
-    return _.map(value.match(/[A-Z]?[a-z]+/g), function(part) {
+    var parts;
+    parts = _.compact(value.match(/[A-Z]?[a-z]*/g));
+    parts = _.map(parts, function(part) {
       return lowercase(part);
-    }).join('_');
+    });
+    return parts.join('_');
   };
 
 }).call(this);
