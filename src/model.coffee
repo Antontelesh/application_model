@@ -40,6 +40,8 @@ class ApplicationModel
 
   toPlainObject: ->
     _resolve = (value) ->
+      if _.isFunction(value)
+        return
       if value instanceof ApplicationModel
         return value.toPlainObject()
       if _.isArray(value)
@@ -54,6 +56,8 @@ class ApplicationModel
 
   format: ->
     _resolve = (value) ->
+      if _.isFunction(value)
+        return
       if value instanceof ApplicationModel
         return value.format()
       if _.isArray(value)

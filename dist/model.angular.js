@@ -89,6 +89,9 @@
     ApplicationModel.prototype.toPlainObject = function() {
       var _resolve;
       _resolve = function(value) {
+        if (_.isFunction(value)) {
+          return;
+        }
         if (value instanceof ApplicationModel) {
           return value.toPlainObject();
         }
@@ -109,6 +112,9 @@
     ApplicationModel.prototype.format = function() {
       var _resolve;
       _resolve = function(value) {
+        if (_.isFunction(value)) {
+          return;
+        }
         if (value instanceof ApplicationModel) {
           return value.format();
         }
