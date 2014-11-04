@@ -97,7 +97,7 @@ class ApplicationModel
     @getMutators('format')
 
   parseAttribute: (name) ->
-    value = @__tmp_params[name]
+    value = @__tmp_params?[name] || this[name]
     parser_name = @__parsers[name]
     if _.isFunction(this[parser_name])
       return this[parser_name](value)
