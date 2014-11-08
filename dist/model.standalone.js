@@ -185,7 +185,7 @@
 
   module.exports = function(value) {
     var parts;
-    parts = _.compact(value.match(/[A-Z]?[a-z]*/g));
+    parts = _.compact(value.match(/[A-Z0-9]?[a-z0-9]*/g));
     parts = _.map(parts, function(part) {
       return lowercase(part);
     });
