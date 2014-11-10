@@ -150,6 +150,8 @@ instance.format() # {date: '2014-12-31T00:00:00.000Z'}
 </code>
 </pre>
 
+**Note:** Formatters use method <code>formatAttribute(value, key)</code>. You are free to override the latter one. This may help you to put some formatting logic that is common to some of your model properties, instead of creating formatters for each of them.
+
 ## Other features
 ApplicationModel has at least one more feature. This feature is called
 <code>toPlainObject()</code>.
