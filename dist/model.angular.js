@@ -34,7 +34,8 @@
 },{"./model":3}],3:[function(require,module,exports){
 (function (global){
 (function() {
-  var ApplicationModel, snake, valueFn, _;
+  var ApplicationModel, snake, valueFn, _,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
 
@@ -60,6 +61,7 @@
     };
 
     function ApplicationModel(params, defaults) {
+      this.formatAttribute = __bind(this.formatAttribute, this);
       var formatters, getters, getters_setters, parsers, setters;
       this.__attributes = {};
       this.__tmp_params = _.assign({}, defaults, params);
@@ -110,26 +112,10 @@
     };
 
     ApplicationModel.prototype.format = function() {
-      var _resolve;
-      _resolve = function(value) {
-        if (_.isFunction(value)) {
-          return;
-        }
-        if (value instanceof ApplicationModel) {
-          return value.format();
-        }
-        if (_.isArray(value)) {
-          return _.map(value, _resolve);
-        }
-        if (value) {
-          return JSON.parse(JSON.stringify(value));
-        }
-        return value;
-      };
       return _.reduce(this.getOwnKeys(), function(result, key) {
         var formatter;
         formatter = this[this.__formatters[key]] || valueFn;
-        result[key] = _resolve(formatter.call(this, this[key]));
+        result[key] = this.formatAttribute(formatter.call(this, this[key]), key);
         return result;
       }, {}, this);
     };
@@ -177,6 +163,26 @@
       parser_name = this.__parsers[name];
       if (_.isFunction(this[parser_name])) {
         return this[parser_name](value);
+      }
+      return value;
+    };
+
+    ApplicationModel.prototype.formatAttribute = function(value, key) {
+      if (_.isFunction(value)) {
+        return;
+      }
+      if (value instanceof ApplicationModel) {
+        return value.format();
+      }
+      if (_.isArray(value)) {
+        return _.map(value, (function(_this) {
+          return function(value) {
+            return _this.formatAttribute(value, key);
+          };
+        })(this));
+      }
+      if (value) {
+        return JSON.parse(JSON.stringify(value));
       }
       return value;
     };

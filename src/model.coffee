@@ -55,19 +55,9 @@ class ApplicationModel
     , {}, this)
 
   format: ->
-    _resolve = (value) ->
-      if _.isFunction(value)
-        return
-      if value instanceof ApplicationModel
-        return value.format()
-      if _.isArray(value)
-        return _.map(value, _resolve)
-      if value
-        return JSON.parse(JSON.stringify(value))
-      return value
     return _.reduce(@getOwnKeys(), (result, key) ->
       formatter = this[@__formatters[key]] || valueFn
-      result[key] = _resolve(formatter.call(this, this[key]))
+      result[key] = @formatAttribute(formatter.call(this, this[key]), key)
       return result
     , {}, this)
 
@@ -101,6 +91,17 @@ class ApplicationModel
     parser_name = @__parsers[name]
     if _.isFunction(this[parser_name])
       return this[parser_name](value)
+    return value
+
+  formatAttribute: (value, key) =>
+    if _.isFunction(value)
+      return
+    if value instanceof ApplicationModel
+      return value.format()
+    if _.isArray(value)
+      return _.map value, (value) => @formatAttribute(value, key)
+    if value
+      return JSON.parse(JSON.stringify(value))
     return value
 
 module.exports = ApplicationModel
