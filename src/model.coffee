@@ -63,8 +63,8 @@ class ApplicationModel
     , {}, this)
 
   getVisibleKeys: ->
-    return _.reject _.keys(this), (key) ->
-      key.indexOf('__') == 0 && isVisible.call(this, key)
+    return _.filter _.keys(this), (key) ->
+      key.indexOf('__') < 0 && isVisible.call(this, key)
     , this
 
   getMutators: (type) ->
