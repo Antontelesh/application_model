@@ -1,6 +1,7 @@
 _ = require('lodash')
 snake = require('./snake')
 valueFn = require('./valuefn')
+isVisible = require('./isVisible')
 
 class ApplicationModel
 
@@ -49,20 +50,22 @@ class ApplicationModel
       if value
         return JSON.parse(JSON.stringify(value))
       return value
-    return _.reduce(@getOwnKeys(), (result, key) ->
+    return _.reduce(@getVisibleKeys(), (result, key) ->
       result[key] = _resolve(this[key])
       return result
     , {}, this)
 
   format: ->
-    return _.reduce(@getOwnKeys(), (result, key) ->
+    return _.reduce(@getVisibleKeys(), (result, key) ->
       formatter = this[@__formatters[key]] || valueFn
       result[key] = @formatAttribute(formatter.call(this, this[key]), key)
       return result
     , {}, this)
 
-  getOwnKeys: ->
-    return _.reject _.keys(this), (key) -> key.indexOf('__') == 0
+  getVisibleKeys: ->
+    return _.reject _.keys(this), (key) ->
+      key.indexOf('__') == 0 && isVisible.call(this, key)
+    , this
 
   getMutators: (type) ->
     methods = _.methods(this)

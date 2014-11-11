@@ -1,6 +1,24 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 (function() {
+  var _,
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
+
+  module.exports = function(key) {
+    var invisible, visible;
+    visible = _.isEmpty(this.__visible) && _.keys(this) || this.__visible;
+    invisible = _.isEmpty(this.__invisible) && [] || this.__invisible;
+    return __indexOf.call(visible, key) >= 0 && __indexOf.call(invisible, key) < 0;
+  };
+
+}).call(this);
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],2:[function(require,module,exports){
+(function (global){
+(function() {
   var _;
 
   _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
@@ -15,7 +33,7 @@
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (global){
 (function() {
   var angular, app;
@@ -31,10 +49,10 @@
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./model":3}],3:[function(require,module,exports){
+},{"./model":4}],4:[function(require,module,exports){
 (function (global){
 (function() {
-  var ApplicationModel, snake, valueFn, _,
+  var ApplicationModel, isVisible, snake, valueFn, _,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
@@ -42,6 +60,8 @@
   snake = require('./snake');
 
   valueFn = require('./valuefn');
+
+  isVisible = require('./isVisible');
 
   ApplicationModel = (function() {
     var createGetter, createSetter;
@@ -105,14 +125,14 @@
         }
         return value;
       };
-      return _.reduce(this.getOwnKeys(), function(result, key) {
+      return _.reduce(this.getVisibleKeys(), function(result, key) {
         result[key] = _resolve(this[key]);
         return result;
       }, {}, this);
     };
 
     ApplicationModel.prototype.format = function() {
-      return _.reduce(this.getOwnKeys(), function(result, key) {
+      return _.reduce(this.getVisibleKeys(), function(result, key) {
         var formatter;
         formatter = this[this.__formatters[key]] || valueFn;
         result[key] = this.formatAttribute(formatter.call(this, this[key]), key);
@@ -120,10 +140,10 @@
       }, {}, this);
     };
 
-    ApplicationModel.prototype.getOwnKeys = function() {
+    ApplicationModel.prototype.getVisibleKeys = function() {
       return _.reject(_.keys(this), function(key) {
-        return key.indexOf('__') === 0;
-      });
+        return key.indexOf('__') === 0 && isVisible.call(this, key);
+      }, this);
     };
 
     ApplicationModel.prototype.getMutators = function(type) {
@@ -196,7 +216,7 @@
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./snake":4,"./valuefn":5}],4:[function(require,module,exports){
+},{"./isVisible":1,"./snake":5,"./valuefn":6}],5:[function(require,module,exports){
 (function (global){
 (function() {
   var lowercase, _;
@@ -217,7 +237,7 @@
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lowercase":1}],5:[function(require,module,exports){
+},{"./lowercase":2}],6:[function(require,module,exports){
 (function() {
   module.exports = function(value) {
     return value;
@@ -225,4 +245,4 @@
 
 }).call(this);
 
-},{}]},{},[2]);
+},{}]},{},[3]);
