@@ -125,8 +125,8 @@
     };
 
     ApplicationModel.prototype.getVisibleKeys = function() {
-      return _.reject(_.keys(this), function(key) {
-        return key.indexOf('__') === 0 && isVisible.call(this, key);
+      return _.filter(_.keys(this), function(key) {
+        return key.indexOf('__') < 0 && isVisible.call(this, key);
       }, this);
     };
 
