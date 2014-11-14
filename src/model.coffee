@@ -96,7 +96,7 @@ class ApplicationModel
       return this[parser_name](value)
     return value
 
-  formatAttribute: (value, key) =>
+  formatAttribute: (value, key) ->
     if _.isFunction(value)
       return
     if value instanceof ApplicationModel
