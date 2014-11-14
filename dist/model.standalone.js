@@ -36,8 +36,7 @@
 },{}],3:[function(require,module,exports){
 (function (global){
 (function() {
-  var ApplicationModel, isVisible, snake, valueFn, _,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var ApplicationModel, isVisible, snake, valueFn, _;
 
   _ = (typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null);
 
@@ -65,7 +64,6 @@
     };
 
     function ApplicationModel(params, defaults) {
-      this.formatAttribute = __bind(this.formatAttribute, this);
       var formatters, getters, getters_setters, parsers, setters;
       this.__attributes = {};
       this.__tmp_params = _.assign({}, defaults, params);
