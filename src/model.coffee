@@ -15,7 +15,7 @@ class ApplicationModel
       return attributes[prop_name] = fn.call(self, value)
 
   constructor: (params, defaults) ->
-    @__attributes = {}
+    @__attributes = @toPlainObject()
     @__tmp_params = _.assign({}, defaults, params)
     getters = @__getters = @getGetters()
     setters = @__setters = @getSetters()
