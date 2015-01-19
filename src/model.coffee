@@ -1,7 +1,6 @@
 _ = require('lodash')
 snake = require('./snake')
 valueFn = require('./valuefn')
-isVisible = require('./isVisible')
 
 class ApplicationModel
 
@@ -13,6 +12,19 @@ class ApplicationModel
     self = this
     return (value) ->
       return attributes[prop_name] = fn.call(self, value)
+
+  _resolve = (value, method = 'toPlainObject') ->
+    if _.isFunction(value)
+      return
+    if value instanceof ApplicationModel
+      return value[method]()
+    if _.isArray(value)
+      return _.map value, (item) -> _resolve(item, method)
+    if value
+      return JSON.parse(JSON.stringify(value))
+    return value
+
+  __validators: []
 
   constructor: (params, defaults) ->
     @__attributes = @toPlainObject()
@@ -40,16 +52,6 @@ class ApplicationModel
     @__tmp_params = undefined
 
   toPlainObject: ->
-    _resolve = (value) ->
-      if _.isFunction(value)
-        return
-      if value instanceof ApplicationModel
-        return value.toPlainObject()
-      if _.isArray(value)
-        return _.map(value, _resolve)
-      if value
-        return JSON.parse(JSON.stringify(value))
-      return value
     return _.reduce(@getVisibleKeys(), (result, key) ->
       result[key] = _resolve(this[key])
       return result
@@ -58,14 +60,45 @@ class ApplicationModel
   format: ->
     return _.reduce(@getVisibleKeys(), (result, key) ->
       formatter = this[@__formatters[key]] || valueFn
-      result[key] = @formatAttribute(formatter.call(this, this[key]), key)
+      value = formatter.call(this, this[key])
+      result[key] = _resolve(value, 'format')
       return result
     , {}, this)
 
+  validateAttribute: (key) ->
+    return _.isEmpty(@getAttibuteErrors(key))
+
+  getAttibuteErrors: (key) ->
+    value = this[key]
+    if value instanceof ApplicationModel
+      return value.validate().errors
+    if !_.isEmpty(@__validators[key])
+      return _.keys _.pick @__validators[key], (validator) -> !validator(value)
+    return []
+
+  parseAttribute: (name) ->
+    value = @__tmp_params?[name] || this[name]
+    parser_name = @__parsers[name]
+    if _.isFunction(this[parser_name])
+      return this[parser_name](value)
+    return value
+
+  attributeIsVisible: (key) ->
+    visible = _.isEmpty(@__visible) && _.keys(this) || @__visible
+    invisible = _.isEmpty(@__invisible) && [] || @__invisible
+    return key.indexOf('__') < 0 &&
+           key in visible &&
+           key not in invisible
+
+  validate: ->
+    errors = _.unique _.flatten _.map(@getVisibleKeys(), this.getAttibuteErrors, this)
+    return {
+      errors: errors
+      result: _.isEmpty(errors)
+    }
+
   getVisibleKeys: ->
-    return _.filter _.keys(this), (key) ->
-      key.indexOf('__') < 0 && isVisible.call(this, key)
-    , this
+    return _.filter(_.keys(this), this.attributeIsVisible, this)
 
   getMutators: (type) ->
     methods = _.methods(this)
@@ -89,22 +122,5 @@ class ApplicationModel
   getFormatters: ->
     @getMutators('format')
 
-  parseAttribute: (name) ->
-    value = @__tmp_params?[name] || this[name]
-    parser_name = @__parsers[name]
-    if _.isFunction(this[parser_name])
-      return this[parser_name](value)
-    return value
-
-  formatAttribute: (value, key) ->
-    if _.isFunction(value)
-      return
-    if value instanceof ApplicationModel
-      return value.format()
-    if _.isArray(value)
-      return _.map value, (value) => @formatAttribute(value, key)
-    if value
-      return JSON.parse(JSON.stringify(value))
-    return value
 
 module.exports = ApplicationModel
